@@ -1,0 +1,231 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Question Bank | AptiPro{% endblock %}
+
+{% block extra_css %}
+<style>
+    .qb-container {
+        max-width: 1200px;
+        margin: 30px auto;
+        padding: 20px;
+    }
+
+    .qb-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .qb-header h1 {
+        font-size: 28px;
+        margin: 0 0 8px;
+        color: #172554;
+    }
+
+    .qb-header p {
+        color: #64748b;
+        margin: 0;
+    }
+
+    .qb-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .qb-btn {
+        display: inline-block;
+        padding: 11px 17px;
+        border-radius: 9px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        background: #2563eb;
+        color: white;
+    }
+
+    .qb-btn.secondary {
+        background: #0f172a;
+    }
+
+    .qb-card {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 20px;
+        margin-bottom: 16px;
+        box-shadow: 0 4px 15px rgba(15, 23, 42, .04);
+    }
+
+    .qb-question {
+        font-weight: 600;
+        color: #1e293b;
+        font-size: 16px;
+        margin-bottom: 14px;
+    }
+
+    .qb-meta {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        color: #64748b;
+        font-size: 13px;
+        margin-bottom: 15px;
+    }
+
+    .qb-tag {
+        background: #eff6ff;
+        color: #1d4ed8;
+        padding: 5px 9px;
+        border-radius: 20px;
+    }
+
+    .qb-options {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+        margin-bottom: 15px;
+    }
+
+    .qb-option {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 10px;
+        color: #475569;
+        font-size: 14px;
+    }
+
+    .qb-links {
+        display: flex;
+        gap: 15px;
+        font-size: 14px;
+    }
+
+    .qb-links a {
+        color: #2563eb;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .qb-links a.delete {
+        color: #dc2626;
+    }
+
+    .qb-empty {
+        text-align: center;
+        padding: 45px 20px;
+        color: #64748b;
+    }
+
+    @media (max-width: 600px) {
+        .qb-container {
+            padding: 12px;
+        }
+
+        .qb-options {
+            grid-template-columns: 1fr;
+        }
+
+        .qb-header h1 {
+            font-size: 23px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="qb-container">
+
+    <div class="qb-header">
+        <div>
+            <h1>Question Bank</h1>
+            <p>Manage your aptitude questions in one place.</p>
+        </div>
+
+        <div class="qb-actions">
+            <a href="{% url 'questionbank:generate_question_set' %}"
+               class="qb-btn secondary">
+                Generate Question Set
+            </a>
+
+            <a href="{% url 'questionbank:question_create' %}"
+               class="qb-btn">
+                + Add Question
+            </a>
+        </div>
+    </div>
+
+    {% for question in questions %}
+
+        <div class="qb-card">
+
+            <div class="qb-question">
+                {{ forloop.counter }}. {{ question.question_text }}
+            </div>
+
+            <div class="qb-meta">
+                <span class="qb-tag">
+                    {{ question.category }}
+                </span>
+
+                <span class="qb-tag">
+                    {{ question.difficulty }}
+                </span>
+
+                <span>
+                    {{ question.marks }} marks
+                </span>
+
+                <span>
+                    {% if question.is_active %}
+                        Active
+                    {% else %}
+                        Inactive
+                    {% endif %}
+                </span>
+            </div>
+
+            <div class="qb-options">
+                <div class="qb-option">A. {{ question.option_a }}</div>
+                <div class="qb-option">B. {{ question.option_b }}</div>
+                <div class="qb-option">C. {{ question.option_c }}</div>
+                <div class="qb-option">D. {{ question.option_d }}</div>
+            </div>
+
+            <div class="qb-links">
+                <a href="{% url 'questionbank:question_update' question.pk %}">
+                    Edit
+                </a>
+
+                <a class="delete"
+                   href="{% url 'questionbank:question_delete' question.pk %}">
+                    Delete
+                </a>
+            </div>
+
+        </div>
+
+    {% empty %}
+
+        <div class="qb-card qb-empty">
+            <h3>No questions found</h3>
+            <p>Start building your question bank by adding your first question.</p>
+
+            <a href="{% url 'questionbank:question_create' %}"
+               class="qb-btn">
+                Add Your First Question
+            </a>
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

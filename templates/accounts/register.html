@@ -1,0 +1,138 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Create Account | AptiPro{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="auth-section">
+
+    <!-- LEFT INFORMATION SECTION -->
+    <div class="auth-info">
+
+        <span class="eyebrow">JOIN APTIPRO</span>
+
+        <h1>
+            Start your journey towards
+            <span>success.</span>
+        </h1>
+
+        <p>
+            Create your AptiPro account and take the next step
+            towards improving your aptitude, technical skills
+            and placement readiness.
+        </p>
+
+        <div class="auth-benefits">
+
+            <div class="auth-benefit">
+                <span>✓</span>
+                Track your learning progress
+            </div>
+
+            <div class="auth-benefit">
+                <span>✓</span>
+                Practice placement-style questions
+            </div>
+
+            <div class="auth-benefit">
+                <span>✓</span>
+                Discover your strengths and weaknesses
+            </div>
+
+            <div class="auth-benefit">
+                <span>✓</span>
+                Improve your placement preparation
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RIGHT REGISTRATION CARD -->
+    <div class="auth-card">
+
+        <div class="login-brand">
+            <span class="brand-icon">A</span>
+            <span>Apti<strong>Pro</strong></span>
+        </div>
+
+        <h2>Create your account</h2>
+
+        <p class="muted">
+            Enter your details to get started with AptiPro.
+        </p>
+
+
+        <!-- REGISTRATION FORM -->
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="form-errors">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+
+            {% for field in form %}
+
+                <div class="form-group">
+
+                    <label for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                    </label>
+
+                    {{ field }}
+
+                    {% if field.help_text %}
+                        <small class="help-text">
+                            {{ field.help_text|safe }}
+                        </small>
+                    {% endif %}
+
+                    {% for error in field.errors %}
+                        <small class="field-error">
+                            {{ error }}
+                        </small>
+                    {% endfor %}
+
+                </div>
+
+            {% endfor %}
+
+
+            <button type="submit" class="btn btn-primary btn-full">
+                Create My Account
+                <span>→</span>
+            </button>
+
+        </form>
+
+
+        <div class="auth-divider">
+            <span>ALREADY A MEMBER?</span>
+        </div>
+
+        <p class="auth-switch">
+            Already registered?
+            <a href="{% url 'login' %}">Sign in</a>
+        </p>
+
+        <div class="auth-security">
+            <span>🔒</span>
+            Your account details are securely handled.
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

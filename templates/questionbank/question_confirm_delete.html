@@ -1,0 +1,43 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Delete Question | AptiPro{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/questionbank.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="qb-page">
+    <div class="qb-delete-card">
+        <div class="qb-delete-icon">!</div>
+
+        <span class="qb-eyebrow">CONFIRM ACTION</span>
+        <h1>Delete this question?</h1>
+
+        <p>
+            Are you sure you want to delete the following question?
+            This action cannot be undone.
+        </p>
+
+        <div class="qb-delete-question">
+            {{ question.question_text }}
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="qb-form-footer">
+                <a href="{% url 'questionbank:question_list' %}"
+                   class="qb-btn qb-btn-outline">
+                    Cancel
+                </a>
+
+                <button type="submit" class="qb-btn qb-btn-danger">
+                    Yes, Delete Question
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

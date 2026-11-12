@@ -1,0 +1,154 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Assessments | AptiPro{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/assessments.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="assessment-page">
+
+    <div class="assessment-header">
+        <div>
+            <span class="assessment-eyebrow">FACULTY WORKSPACE</span>
+            <h1>Assessment Management</h1>
+            <p>Create, organize and manage your aptitude assessments.</p>
+        </div>
+
+        <a href="{% url 'assessments:assessment_create' %}"
+           class="assessment-btn primary-btn">
+            + Create Assessment
+        </a>
+    </div>
+
+    <div class="assessment-stats">
+
+        <div class="assessment-stat">
+            <span>Total Assessments</span>
+            <h2>{{ total_assessments }}</h2>
+        </div>
+
+        <div class="assessment-stat">
+            <span>Draft</span>
+            <h2>{{ draft_count }}</h2>
+        </div>
+
+        <div class="assessment-stat">
+            <span>Scheduled</span>
+            <h2>{{ scheduled_count }}</h2>
+        </div>
+
+        <div class="assessment-stat">
+            <span>Live</span>
+            <h2>{{ live_count }}</h2>
+        </div>
+
+        <div class="assessment-stat">
+            <span>Completed</span>
+            <h2>{{ completed_count }}</h2>
+        </div>
+
+    </div>
+
+    <div class="assessment-panel">
+
+        <div class="panel-heading">
+            <div>
+                <h2>Your Assessments</h2>
+                <p>All assessments created by your faculty account.</p>
+            </div>
+        </div>
+
+        {% if assessments %}
+
+        <div class="assessment-table-wrapper">
+
+            <table class="assessment-table">
+
+                <thead>
+                    <tr>
+                        <th>Assessment</th>
+                        <th>Questions</th>
+                        <th>Duration</th>
+                        <th>Schedule</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for assessment in assessments %}
+
+                    <tr>
+
+                        <td>
+                            <strong>{{ assessment.title }}</strong>
+                            <small>
+                                Created {{ assessment.created_at|date:"d M Y" }}
+                            </small>
+                        </td>
+
+                        <td>
+                            {{ assessment.total_questions }}
+                        </td>
+
+                        <td>
+                            {{ assessment.total_duration_minutes }} min
+                        </td>
+
+                        <td>
+                            {% if assessment.scheduled_start %}
+                                {{ assessment.scheduled_start|date:"d M Y, h:i A" }}
+                            {% else %}
+                                Not scheduled
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <span class="assessment-status status-{{ assessment.status|lower }}">
+                                {{ assessment.get_status_display }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <a class="view-link"
+                               href="{% url 'assessments:assessment_detail' assessment.pk %}">
+                                View Details →
+                            </a>
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="assessment-empty">
+            <div class="empty-icon">📝</div>
+            <h3>No assessments created yet</h3>
+            <p>Start by creating your first aptitude assessment.</p>
+
+            <a href="{% url 'assessments:assessment_create' %}"
+               class="assessment-btn primary-btn">
+                Create Your First Assessment
+            </a>
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

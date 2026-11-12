@@ -1,0 +1,116 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}AptiPro{% endblock %}</title>
+
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- Individual Page CSS -->
+    {% block extra_css %}
+    {% endblock %}
+
+    <!-- Main JavaScript -->
+    <script src="{% static 'js/main.js' %}" defer></script>
+</head>
+
+<body>
+
+    <!-- NAVIGATION BAR -->
+    <header class="navbar">
+
+        <a href="{% url 'home' %}" class="brand">
+            <span class="brand-icon">A</span>
+            Apti<span>Pro</span>
+        </a>
+
+        <button class="menu-toggle"
+                id="menuToggle"
+                aria-label="Toggle navigation">
+            ☰
+        </button>
+
+        <nav class="nav-links" id="navLinks">
+
+            <a href="{% url 'home' %}">Home</a>
+
+            {% if user.is_authenticated %}
+
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+
+                <form action="{% url 'logout' %}"
+                      method="post"
+                      class="nav-form">
+
+                    {% csrf_token %}
+
+                    <button type="submit" class="nav-logout">
+                        Logout
+                    </button>
+
+                </form>
+
+            {% else %}
+
+                <a href="{% url 'login' %}">Login</a>
+
+                <a href="{% url 'register' %}" class="nav-register">
+                    Get Started
+                </a>
+
+            {% endif %}
+
+        </nav>
+
+    </header>
+
+
+    <!-- DJANGO MESSAGES -->
+    {% if messages %}
+
+        <div class="messages">
+
+            {% for message in messages %}
+
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- MAIN PAGE CONTENT -->
+    <main>
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="footer">
+
+        <div class="brand">
+            <span class="brand-icon">A</span>
+            Apti<span>Pro</span>
+        </div>
+
+        <p>Practice Smart. Think Fast. Get Placed.</p>
+
+        <p>© 2026 AptiPro. All rights reserved.</p>
+
+    </footer>
+
+</body>
+</html>

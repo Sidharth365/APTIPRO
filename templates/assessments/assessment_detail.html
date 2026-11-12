@@ -1,0 +1,105 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Assessment Details | AptiPro{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/assessments.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="assessment-page">
+
+    <div class="assessment-header">
+        <div>
+            <span class="assessment-eyebrow">ASSESSMENT DETAILS</span>
+            <h1>{{ assessment.title }}</h1>
+            <p>{{ assessment.description|default:"No description provided." }}</p>
+        </div>
+
+        <a href="{% url 'assessments:assessment_list' %}"
+           class="assessment-btn secondary-btn">
+            ← Back
+        </a>
+    </div>
+
+    <div class="assessment-detail-grid">
+
+        <div class="assessment-detail-card">
+            <span>Total Questions</span>
+            <h2>{{ assessment.total_questions }}</h2>
+        </div>
+
+        <div class="assessment-detail-card">
+            <span>Duration</span>
+            <h2>{{ assessment.total_duration_minutes }} min</h2>
+        </div>
+
+        <div class="assessment-detail-card">
+            <span>Status</span>
+            <h2>{{ assessment.get_status_display }}</h2>
+        </div>
+
+        <div class="assessment-detail-card">
+            <span>Created</span>
+            <h2>{{ assessment.created_at|date:"d M Y" }}</h2>
+        </div>
+
+    </div>
+
+    <div class="assessment-panel">
+
+        <div class="panel-heading">
+            <div>
+                <h2>Selected Questions</h2>
+                <p>Questions included in this assessment.</p>
+            </div>
+        </div>
+
+        {% for item in assessment_questions %}
+
+        <div class="question-preview-card">
+
+            <div class="question-preview-top">
+                <strong>Question {{ item.order }}</strong>
+                <span>{{ item.question.get_difficulty_display }}</span>
+            </div>
+
+            <p>{{ item.question.question_text }}</p>
+
+            <div class="preview-options">
+                <div>A. {{ item.question.option_a }}</div>
+                <div>B. {{ item.question.option_b }}</div>
+                <div>C. {{ item.question.option_c }}</div>
+                <div>D. {{ item.question.option_d }}</div>
+            </div>
+
+            <div class="question-preview-meta">
+                <span>{{ item.question.category.name }}</span>
+                <span>{{ item.effective_time_limit }} seconds</span>
+                <span>{{ item.effective_marks }} marks</span>
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <p>No questions have been added to this assessment.</p>
+
+        {% endfor %}
+
+    </div>
+
+    <div class="selection-note">
+        <strong>Next action</strong>
+        <p>
+            Assessment creation is complete. The faculty Start Assessment
+            control and student attempt interface will be added in the next step.
+        </p>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,230 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Create Assessment | AptiPro{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/assessments.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="assessment-page">
+
+    <div class="assessment-header">
+        <div>
+            <span class="assessment-eyebrow">FACULTY WORKSPACE</span>
+            <h1>{{ page_heading }}</h1>
+            <p>Configure your assessment and generate its question set.</p>
+        </div>
+
+        <a href="{% url 'assessments:assessment_list' %}"
+           class="assessment-btn secondary-btn">
+            ← Back to Assessments
+        </a>
+    </div>
+
+    <form method="POST" class="assessment-form">
+
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div class="form-error">
+            {{ form.non_field_errors }}
+        </div>
+        {% endif %}
+
+        <section class="assessment-form-section">
+
+            <div class="section-heading">
+                <span class="section-number">01</span>
+                <div>
+                    <h2>Basic Information</h2>
+                    <p>Enter the assessment details.</p>
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label for="{{ form.title.id_for_label }}">
+                    Assessment Title
+                </label>
+
+                {{ form.title }}
+
+                {% for error in form.title.errors %}
+                    <small class="field-error">{{ error }}</small>
+                {% endfor %}
+            </div>
+
+            <div class="form-field">
+                <label for="{{ form.description.id_for_label }}">
+                    Description / Instructions
+                </label>
+
+                {{ form.description }}
+
+                {% for error in form.description.errors %}
+                    <small class="field-error">{{ error }}</small>
+                {% endfor %}
+            </div>
+
+            <div class="form-field">
+                <label for="{{ form.total_duration_minutes.id_for_label }}">
+                    Total Duration (Minutes)
+                </label>
+
+                {{ form.total_duration_minutes }}
+
+                {% for error in form.total_duration_minutes.errors %}
+                    <small class="field-error">{{ error }}</small>
+                {% endfor %}
+            </div>
+
+        </section>
+
+
+        <section class="assessment-form-section">
+
+            <div class="section-heading">
+                <span class="section-number">02</span>
+                <div>
+                    <h2>Automatic Question Selection</h2>
+                    <p>Select the type and number of questions.</p>
+                </div>
+            </div>
+
+            <div class="form-grid">
+
+                <div class="form-field">
+                    <label>Question Category</label>
+                    {{ form.category }}
+                    {% for error in form.category.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="form-field">
+                    <label>Difficulty Level</label>
+                    {{ form.difficulty }}
+                    {% for error in form.difficulty.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="form-field">
+                    <label>Number of Questions</label>
+                    {{ form.question_count }}
+                    {% for error in form.question_count.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+            <div class="selection-note">
+                <strong>Automatic Question Bank</strong>
+                <p>
+                    AptiPro will randomly select active questions matching
+                    your chosen category and difficulty from your question bank.
+                </p>
+            </div>
+
+        </section>
+
+
+        <section class="assessment-form-section">
+
+            <div class="section-heading">
+                <span class="section-number">03</span>
+                <div>
+                    <h2>Assessment Schedule</h2>
+                    <p>Optionally schedule when the assessment should be available.</p>
+                </div>
+            </div>
+
+            <div class="form-grid">
+
+                <div class="form-field">
+                    <label>Scheduled Start</label>
+                    {{ form.scheduled_start }}
+
+                    {% for error in form.scheduled_start.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="form-field">
+                    <label>Scheduled End</label>
+                    {{ form.scheduled_end }}
+
+                    {% for error in form.scheduled_end.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+            <div class="selection-note">
+                Leave both schedule fields empty to save the assessment as a Draft.
+                Add a future start time to save it as Scheduled.
+            </div>
+
+        </section>
+
+
+        <section class="assessment-form-section">
+
+            <div class="section-heading">
+                <span class="section-number">04</span>
+                <div>
+                    <h2>Assessment Settings</h2>
+                    <p>Choose how questions will appear to students.</p>
+                </div>
+            </div>
+
+            <div class="setting-option">
+                <div>
+                    <strong>Randomize Questions</strong>
+                    <p>Shuffle the selected questions.</p>
+                </div>
+                {{ form.randomize_questions }}
+            </div>
+
+            <div class="setting-option">
+                <div>
+                    <strong>Randomize Options</strong>
+                    <p>Shuffle the answer options for each question.</p>
+                </div>
+                {{ form.randomize_options }}
+            </div>
+
+            <div class="setting-option">
+                <div>
+                    <strong>Allow Question Navigation</strong>
+                    <p>Allow students to move between questions.</p>
+                </div>
+                {{ form.allow_question_navigation }}
+            </div>
+
+        </section>
+
+
+        <div class="assessment-form-actions">
+
+            <a href="{% url 'assessments:assessment_list' %}"
+               class="assessment-btn secondary-btn">
+                Cancel
+            </a>
+
+            <button type="submit" class="assessment-btn primary-btn">
+                Create Assessment →
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

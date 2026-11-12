@@ -1,0 +1,427 @@
+
+/* ==========================================
+   APTIPRO - GLOBAL DESIGN SYSTEM
+   Premium Navy & Indigo Theme
+========================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --primary: #4f46e5;
+    --primary-dark: #3730a3;
+    --primary-light: #818cf8;
+
+    --navy: #172554;
+    --dark: #0f172a;
+    --text: #334155;
+    --muted: #64748b;
+
+    --background: #f8fafc;
+    --white: #ffffff;
+    --border: #e2e8f0;
+
+    --success: #16a34a;
+    --danger: #e11d48;
+
+    --shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+}
+
+/* RESET */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--background);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.6;
+}
+
+main {
+    flex: 1;
+    width: 100%;
+}
+
+/* ==========================================
+   NAVIGATION BAR
+========================================== */
+
+.navbar {
+    width: 100%;
+    min-height: 76px;
+    padding: 0 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: rgba(255, 255, 255, 0.96);
+    border-bottom: 1px solid var(--border);
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    backdrop-filter: blur(15px);
+}
+
+/* BRAND */
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    color: var(--navy);
+    font-size: 23px;
+    font-weight: 800;
+    text-decoration: none;
+    letter-spacing: -1px;
+}
+
+.brand > span:last-child {
+    color: var(--primary);
+}
+
+.brand-icon {
+    width: 39px;
+    height: 39px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--white);
+    font-size: 21px;
+    font-weight: 800;
+
+    border-radius: 11px;
+    background: linear-gradient(135deg, #4f46e5, #818cf8);
+
+    box-shadow: 0 5px 15px rgba(79, 70, 229, 0.25);
+}
+
+/* NAV LINKS */
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.nav-links > a {
+    color: #475569;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.25s ease;
+}
+
+.nav-links > a:hover {
+    color: var(--primary);
+}
+
+/* GET STARTED BUTTON */
+
+.nav-links .nav-register {
+    padding: 11px 22px;
+    color: var(--white);
+
+    background: var(--primary);
+    border-radius: 9px;
+
+    transition: 0.25s ease;
+}
+
+.nav-links .nav-register:hover {
+    color: var(--white);
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+/* LOGOUT */
+
+.nav-form {
+    display: inline-flex;
+    margin: 0;
+}
+
+.nav-logout {
+    border: none;
+    background: transparent;
+
+    color: #475569;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.nav-logout:hover {
+    color: var(--danger);
+}
+
+/* MOBILE MENU BUTTON */
+
+.menu-toggle {
+    display: none;
+    border: none;
+    background: transparent;
+
+    color: var(--navy);
+    font-size: 27px;
+
+    cursor: pointer;
+}
+
+/* ==========================================
+   COMMON BUTTONS
+========================================== */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    padding: 13px 23px;
+    border: none;
+    border-radius: 9px;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #3730a3, #4f46e5);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.22);
+}
+
+.btn-secondary {
+    background: var(--white);
+    color: var(--primary);
+    border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+    border-color: var(--primary);
+    background: #eef2ff;
+}
+
+/* ==========================================
+   DJANGO MESSAGES
+========================================== */
+
+.messages {
+    width: 90%;
+    max-width: 1100px;
+    margin: 18px auto 0;
+}
+
+.message {
+    padding: 13px 17px;
+    margin-bottom: 10px;
+
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.message.success {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.message.error {
+    background: #ffe4e6;
+    color: #be123c;
+    border: 1px solid #fecdd3;
+}
+
+.message.warning {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+}
+
+.message.info {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+}
+
+/* ==========================================
+   COMMON TYPOGRAPHY
+========================================== */
+
+h1, h2, h3, h4 {
+    color: var(--navy);
+    line-height: 1.25;
+}
+
+p {
+    color: var(--muted);
+}
+
+.eyebrow {
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+.footer {
+    width: 100%;
+    padding: 35px 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    background: #0f172a;
+    text-align: center;
+    margin-top: auto;
+}
+
+.footer .brand {
+    color: var(--white);
+    font-size: 21px;
+    margin-bottom: 5px;
+}
+
+.footer .brand > span:last-child {
+    color: #818cf8;
+}
+
+.footer p {
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+/* ==========================================
+   COMMON FORM ELEMENTS
+========================================== */
+
+input,
+select,
+textarea,
+button {
+    font-family: inherit;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+========================================== */
+
+@media (max-width: 768px) {
+
+    .navbar {
+        min-height: 68px;
+        padding: 0 5%;
+    }
+
+    .brand {
+        font-size: 21px;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-links {
+        display: none;
+
+        position: absolute;
+        top: 68px;
+        left: 0;
+
+        width: 100%;
+        padding: 22px 5%;
+
+        flex-direction: column;
+        align-items: stretch;
+        gap: 18px;
+
+        background: var(--white);
+        border-bottom: 1px solid var(--border);
+
+        box-shadow: var(--shadow);
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links > a {
+        padding: 8px 0;
+    }
+
+    .nav-links .nav-register {
+        text-align: center;
+    }
+
+    .nav-form {
+        width: 100%;
+    }
+
+    .nav-logout {
+        padding: 8px 0;
+    }
+
+    .footer {
+        padding: 28px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .brand {
+        font-size: 19px;
+    }
+
+    .brand-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
+    }
+
+    .message {
+        font-size: 12px;
+    }
+}

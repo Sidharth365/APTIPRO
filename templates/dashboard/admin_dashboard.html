@@ -1,0 +1,480 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Admin Dashboard | AptiPro{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="admin-layout">
+
+    <!-- ==================================
+         ADMIN SIDEBAR
+    =================================== -->
+
+    <aside class="admin-sidebar" id="adminSidebar">
+
+        <a href="{% url 'admin_dashboard' %}" class="admin-brand">
+            <span class="brand-icon">A</span>
+            Apti<span>Pro</span>
+        </a>
+
+
+        <div class="sidebar-label">WORKSPACE</div>
+
+        <a href="{% url 'admin_dashboard' %}" class="side-link active">
+            <span>▦</span>
+            Overview
+        </a>
+
+        <a href="{% url 'admin:index' %}" class="side-link">
+            <span>⚙</span>
+            Django Admin
+        </a>
+
+
+        <div class="sidebar-label">MANAGEMENT</div>
+
+        <a href="{% url 'admin:accounts_user_changelist' %}" class="side-link">
+            <span>♙</span>
+            Users
+        </a>
+
+        <a href="#" class="side-link">
+            <span>▤</span>
+            Question Bank
+        </a>
+
+        <a href="#" class="side-link">
+            <span>◷</span>
+            Assessments
+        </a>
+
+        <a href="#" class="side-link">
+            <span>▣</span>
+            Colleges
+        </a>
+
+
+        <div class="sidebar-label">SYSTEM</div>
+
+        <a href="#" class="side-link">
+            <span>◉</span>
+            Analytics
+        </a>
+
+        <a href="#" class="side-link">
+            <span>⚙</span>
+            Settings
+        </a>
+
+
+        <!-- SIDEBAR BOTTOM -->
+
+        <div class="sidebar-bottom">
+
+            <div class="admin-profile">
+
+                <div class="admin-avatar">
+                    {{ request.user.username|first|upper }}
+                </div>
+
+                <div>
+                    <strong>{{ request.user.username }}</strong>
+                    <small>Super Administrator</small>
+                </div>
+
+            </div>
+
+            <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+
+                <button class="admin-logout" type="submit">
+                    ↪ Sign out
+                </button>
+            </form>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ==================================
+         MAIN ADMIN CONTENT
+    =================================== -->
+
+    <main class="admin-main">
+
+
+        <!-- TOP NAVIGATION -->
+
+        <header class="admin-topbar">
+
+            <button
+                id="adminMenuToggle"
+                class="admin-menu-toggle"
+                type="button"
+                aria-label="Toggle admin sidebar"
+                aria-expanded="false"
+            >
+                ☰
+            </button>
+
+            <div>
+                <strong>Admin Overview</strong>
+                <small>Manage your AptiPro platform</small>
+            </div>
+
+
+            <div class="admin-top-right">
+
+                <span class="system-status">
+                    <span></span>
+                    System Active
+                </span>
+
+                <div class="top-avatar">
+                    {{ request.user.username|first|upper }}
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- DASHBOARD CONTENT -->
+
+        <section class="admin-content">
+
+
+            <!-- PAGE HEADING -->
+
+            <div class="admin-heading">
+
+                <div>
+
+                    <span class="admin-eyebrow">
+                        PLATFORM CONTROL CENTER
+                    </span>
+
+                    <h1>
+                        Welcome back, {{ request.user.username }}!
+                    </h1>
+
+                    <p>
+                        Here's what's happening with AptiPro today.
+                    </p>
+
+                </div>
+
+                <a href="{% url 'admin:index' %}" class="admin-primary-btn">
+                    Open Django Admin →
+                </a>
+
+            </div>
+
+
+            <!-- ==================================
+                 STATISTICS
+            =================================== -->
+
+            <div class="admin-stats">
+
+
+                <!-- TOTAL USERS -->
+
+                <div class="admin-stat-card">
+
+                    <div class="admin-stat-top">
+                        <span>Total Users</span>
+                        <div class="admin-stat-icon blue">♙</div>
+                    </div>
+
+                    <h2>{{ total_users|default:0 }}</h2>
+
+                    <small>Registered accounts</small>
+
+                </div>
+
+
+                <!-- STUDENTS -->
+
+                <div class="admin-stat-card">
+
+                    <div class="admin-stat-top">
+                        <span>Students</span>
+                        <div class="admin-stat-icon purple">▤</div>
+                    </div>
+
+                    <h2>{{ total_students|default:0 }}</h2>
+
+                    <small>Student accounts</small>
+
+                </div>
+
+
+                <!-- FACULTY -->
+
+                <div class="admin-stat-card">
+
+                    <div class="admin-stat-top">
+                        <span>Faculty</span>
+                        <div class="admin-stat-icon green">♙</div>
+                    </div>
+
+                    <h2>{{ total_faculty|default:0 }}</h2>
+
+                    <small>Faculty accounts</small>
+
+                </div>
+
+
+                <!-- COLLEGE ADMINS -->
+
+                <div class="admin-stat-card">
+
+                    <div class="admin-stat-top">
+                        <span>College Admins</span>
+                        <div class="admin-stat-icon orange">▣</div>
+                    </div>
+
+                    <h2>{{ total_college_admins|default:0 }}</h2>
+
+                    <small>College administrators</small>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================
+                 RECENT USERS + QUICK ACTIONS
+            =================================== -->
+
+            <div class="admin-main-grid">
+
+
+                <!-- RECENT REGISTRATIONS -->
+
+                <div class="admin-panel">
+
+                    <div class="admin-panel-heading">
+
+                        <div>
+                            <h2>Recent Registrations</h2>
+                            <p>Latest users joining AptiPro</p>
+                        </div>
+
+                        <a href="{% url 'admin:accounts_user_changelist' %}">
+                            View all →
+                        </a>
+
+                    </div>
+
+
+                    <div class="admin-table-wrapper">
+
+                        <table class="admin-table">
+
+                            <thead>
+                                <tr>
+                                    <th>USER</th>
+                                    <th>EMAIL</th>
+                                    <th>ROLE</th>
+                                    <th>STATUS</th>
+                                </tr>
+                            </thead>
+
+
+                            <tbody>
+
+                                {% for member in recent_users %}
+
+                                <tr>
+
+                                    <td>
+                                        <div class="table-user">
+
+                                            <div class="table-avatar">
+                                                {{ member.username|first|upper }}
+                                            </div>
+
+                                            <strong>
+                                                {{ member.username }}
+                                            </strong>
+
+                                        </div>
+                                    </td>
+
+
+                                    <td>
+                                        {{ member.email|default:"Not provided" }}
+                                    </td>
+
+
+                                    <td>
+
+                                        {% if member.role %}
+                                            <span class="role-tag">
+                                                {{ member.get_role_display }}
+                                            </span>
+                                        {% else %}
+                                            <span class="role-tag">
+                                                Administrator
+                                            </span>
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <td>
+
+                                        {% if member.is_active %}
+
+                                            <span class="active-tag">
+                                                Active
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="inactive-tag">
+                                                Inactive
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+                                </tr>
+
+
+                                {% empty %}
+
+                                <tr>
+                                    <td colspan="4" class="empty-table">
+                                        No registered users yet.
+                                    </td>
+                                </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUICK ACTIONS -->
+
+                <div class="admin-panel quick-actions">
+
+                    <h2>Quick Actions</h2>
+
+                    <p>Manage your platform easily.</p>
+
+
+                    <!-- ADD USER -->
+
+                    <a
+                        href="{% url 'admin:accounts_user_add' %}"
+                        class="quick-action"
+                    >
+
+                        <span class="action-icon">+</span>
+
+                        <div>
+                            <strong>Add User</strong>
+                            <small>Create a new platform account</small>
+                        </div>
+
+                        <span>→</span>
+
+                    </a>
+
+
+                    <!-- MANAGE USERS -->
+
+                    <a
+                        href="{% url 'admin:accounts_user_changelist' %}"
+                        class="quick-action"
+                    >
+
+                        <span class="action-icon">♙</span>
+
+                        <div>
+                            <strong>Manage Users</strong>
+                            <small>View and update user accounts</small>
+                        </div>
+
+                        <span>→</span>
+
+                    </a>
+
+
+                    <!-- DJANGO ADMIN -->
+
+                    <a
+                        href="{% url 'admin:index' %}"
+                        class="quick-action"
+                    >
+
+                        <span class="action-icon">⚙</span>
+
+                        <div>
+                            <strong>System Management</strong>
+                            <small>Open administration tools</small>
+                        </div>
+
+                        <span>→</span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- FOOTER -->
+
+            <div class="admin-footer">
+                AptiPro Administration · Practice Smart. Think Fast. Get Placed.
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const menuToggle = document.getElementById("adminMenuToggle");
+    const sidebar = document.getElementById("adminSidebar");
+
+    if (menuToggle && sidebar) {
+
+        menuToggle.addEventListener("click", function () {
+
+            const isOpen = sidebar.classList.toggle("active");
+
+            menuToggle.setAttribute("aria-expanded", isOpen);
+
+        });
+
+    }
+
+});
+</script>
+{% endblock %}

@@ -1,0 +1,197 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}AptiPro | Smart Placement Preparation{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+<section class="hero">
+
+    <div class="hero-content">
+
+        <span class="eyebrow">YOUR PLACEMENT JOURNEY STARTS HERE</span>
+
+        <h1>
+            Practice Smart.<br>
+            Think <span>Fast.</span><br>
+            Get Placed.
+        </h1>
+
+        <p>
+            Improve your aptitude, logical reasoning, verbal ability
+            and technical knowledge with smart practice and timed tests.
+        </p>
+
+        <div class="hero-buttons">
+
+            {% if user.is_authenticated %}
+
+                <a href="{% url 'dashboard' %}" class="btn btn-primary">
+                    Open Dashboard →
+                </a>
+
+            {% else %}
+
+                <a href="{% url 'register' %}" class="btn btn-primary">
+                    Start Learning →
+                </a>
+
+                <a href="{% url 'login' %}" class="btn btn-outline">
+                    Sign In
+                </a>
+
+            {% endif %}
+
+        </div>
+
+        <div class="hero-note">
+            <span>✓</span> Practice at your own pace
+            <span>✓</span> Track your improvement
+        </div>
+
+    </div>
+
+
+    <!-- HERO VISUAL -->
+    <div class="hero-visual">
+
+        <div class="floating-card card-one">
+
+            <span class="mini-label">YOUR PROGRESS</span>
+
+            <h2>Keep improving!</h2>
+
+            <div class="progress-track">
+                <div class="progress-fill"></div>
+            </div>
+
+            <small>Build your daily practice habit</small>
+
+        </div>
+
+
+        <div class="floating-card card-two">
+
+            <div class="round-icon">✓</div>
+
+            <div>
+                <strong>Practice smarter</strong>
+                <small>Learn from every attempt</small>
+            </div>
+
+        </div>
+
+
+        <div class="hero-circle"></div>
+        <div class="hero-dot dot-one"></div>
+        <div class="hero-dot dot-two"></div>
+
+    </div>
+
+</section>
+
+
+<!-- FEATURES SECTION -->
+<section class="features-section">
+
+    <div class="section-heading">
+
+        <span class="eyebrow">WHAT YOU CAN DO</span>
+
+        <h2>
+            Everything you need to
+            <span>prepare better.</span>
+        </h2>
+
+        <p>
+            One platform for your aptitude and placement preparation.
+        </p>
+
+    </div>
+
+
+    <div class="feature-grid">
+
+        <div class="feature-card">
+            <div class="feature-icon">01</div>
+            <h3>Quantitative Aptitude</h3>
+            <p>
+                Improve calculation speed, mathematical thinking
+                and accuracy.
+            </p>
+        </div>
+
+
+        <div class="feature-card">
+            <div class="feature-icon">02</div>
+            <h3>Logical Reasoning</h3>
+            <p>
+                Practice puzzles, patterns, directions
+                and analytical problems.
+            </p>
+        </div>
+
+
+        <div class="feature-card">
+            <div class="feature-icon">03</div>
+            <h3>Verbal Ability</h3>
+            <p>
+                Improve grammar, vocabulary
+                and communication skills.
+            </p>
+        </div>
+
+
+        <div class="feature-card">
+            <div class="feature-icon">04</div>
+            <h3>Technical Aptitude</h3>
+            <p>
+                Prepare with programming, DBMS, SQL
+                and computer science questions.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CALL TO ACTION -->
+<section class="cta-section">
+
+    <span class="eyebrow">READY TO BEGIN?</span>
+
+    <h2>
+        Your next opportunity starts with
+        <span>one question.</span>
+    </h2>
+
+    <p>
+        Start building the skills that help you move closer
+        to your placement goals.
+    </p>
+
+
+    {% if user.is_authenticated %}
+
+        <a href="{% url 'dashboard' %}" class="btn btn-light">
+            Go to Dashboard →
+        </a>
+
+    {% else %}
+
+        <a href="{% url 'register' %}" class="btn btn-light">
+            Create Free Account →
+        </a>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

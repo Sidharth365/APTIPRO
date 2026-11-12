@@ -1,0 +1,357 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Faculty Dashboard | AptiPro{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/faculty-dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="faculty-layout">
+
+    <!-- Sidebar -->
+    <aside class="faculty-sidebar">
+
+        <a href="{% url 'faculty_dashboard' %}" class="faculty-brand">
+            <span class="faculty-brand-icon">A</span>
+            <span>Apti<span class="brand-highlight">Pro</span></span>
+        </a>
+
+        <div class="faculty-profile">
+            <div class="faculty-avatar">
+                {{ request.user.first_name|default:request.user.username|first|upper }}
+            </div>
+
+            <div>
+                <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
+                <small>Faculty Account</small>
+            </div>
+        </div>
+
+        <div class="faculty-nav-label">WORKSPACE</div>
+
+        <nav class="faculty-navigation">
+
+            <a href="{% url 'faculty_dashboard' %}" class="faculty-nav-link active">
+                <span>▦</span> Dashboard
+            </a>
+
+            <a href="{% url 'questionbank:question_list' %}" class="faculty-nav-link">
+                <span>▤</span> Question Bank
+            </a>
+
+            <a href="{% url 'assessments:assessment_list' %}" class="faculty-nav-link">
+                <span>◷</span> Assessments
+            </a>
+
+            <a href="{% url 'assessments:assessment_create' %}" class="faculty-nav-link">
+                <span>＋</span> Create Assessment
+            </a>
+
+        </nav>
+
+        <div class="faculty-sidebar-bottom">
+            <a href="{% url 'home' %}" class="faculty-nav-link">
+                <span>⌂</span> Visit Website
+            </a>
+
+            <a href="{% url 'logout' %}" class="faculty-nav-link logout-link">
+                <span>↪</span> Logout
+            </a>
+        </div>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="faculty-main">
+
+        <header class="faculty-topbar">
+
+            <div>
+                <span class="faculty-date-label">FACULTY WORKSPACE</span>
+                <h2>Dashboard</h2>
+            </div>
+
+            <div class="faculty-topbar-user">
+                <div class="faculty-topbar-avatar">
+                    {{ request.user.first_name|default:request.user.username|first|upper }}
+                </div>
+                <div>
+                    <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
+                    <small>Faculty</small>
+                </div>
+            </div>
+
+        </header>
+
+
+        <!-- Welcome -->
+        <section class="faculty-welcome">
+
+            <div class="welcome-content">
+                <span class="welcome-label">YOUR TEACHING WORKSPACE</span>
+
+                <h1>
+                    Welcome back,
+                    {{ request.user.first_name|default:request.user.username }}!
+                </h1>
+
+                <p>
+                    Manage your question bank, create assessments and
+                    monitor your assessment activity from one place.
+                </p>
+
+                <div class="welcome-actions">
+                    <a href="{% url 'assessments:assessment_create' %}"
+                       class="faculty-primary-btn">
+                        + Create Assessment
+                    </a>
+
+                    <a href="{% url 'questionbank:question_list' %}"
+                       class="faculty-secondary-btn">
+                        Manage Questions
+                    </a>
+                </div>
+            </div>
+
+            <div class="welcome-decoration">
+                <div class="decoration-circle circle-one"></div>
+                <div class="decoration-circle circle-two"></div>
+                <div class="decoration-card">
+                    <span>✦</span>
+                    <strong>Teach smarter.</strong>
+                    <small>Assess better.</small>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- Statistics -->
+        <section class="faculty-section">
+
+            <div class="faculty-section-heading">
+                <div>
+                    <h2>Overview</h2>
+                    <p>Your question bank and assessment statistics.</p>
+                </div>
+            </div>
+
+            <div class="faculty-stats-grid">
+
+                <div class="faculty-stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon purple">▤</span>
+                        <span class="stat-caption">QUESTION BANK</span>
+                    </div>
+                    <h3>{{ total_questions }}</h3>
+                    <p>Total questions</p>
+                    <small>{{ active_questions }} active questions</small>
+                </div>
+
+                <div class="faculty-stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon blue">▦</span>
+                        <span class="stat-caption">ASSESSMENTS</span>
+                    </div>
+                    <h3>{{ total_assessments }}</h3>
+                    <p>Total assessments</p>
+                    <small>Created by you</small>
+                </div>
+
+                <div class="faculty-stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon orange">◷</span>
+                        <span class="stat-caption">SCHEDULED</span>
+                    </div>
+                    <h3>{{ scheduled_count }}</h3>
+                    <p>Scheduled assessments</p>
+                    <small>Waiting to start</small>
+                </div>
+
+                <div class="faculty-stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon green">●</span>
+                        <span class="stat-caption">LIVE</span>
+                    </div>
+                    <h3>{{ live_count }}</h3>
+                    <p>Live assessments</p>
+                    <small>Currently active</small>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Assessment Status -->
+        <section class="faculty-section">
+
+            <div class="faculty-section-heading">
+                <div>
+                    <h2>Assessment Status</h2>
+                    <p>Track the status of your assessments.</p>
+                </div>
+
+                <a href="{% url 'assessments:assessment_list' %}"
+                   class="faculty-text-link">
+                    View all →
+                </a>
+            </div>
+
+            <div class="status-grid">
+
+                <div class="status-card">
+                    <span class="status-dot draft-dot"></span>
+                    <div>
+                        <strong>{{ draft_count }}</strong>
+                        <small>Draft</small>
+                    </div>
+                </div>
+
+                <div class="status-card">
+                    <span class="status-dot scheduled-dot"></span>
+                    <div>
+                        <strong>{{ scheduled_count }}</strong>
+                        <small>Scheduled</small>
+                    </div>
+                </div>
+
+                <div class="status-card">
+                    <span class="status-dot live-dot"></span>
+                    <div>
+                        <strong>{{ live_count }}</strong>
+                        <small>Live</small>
+                    </div>
+                </div>
+
+                <div class="status-card">
+                    <span class="status-dot completed-dot"></span>
+                    <div>
+                        <strong>{{ completed_count }}</strong>
+                        <small>Completed</small>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Quick Actions -->
+        <section class="faculty-section">
+
+            <div class="faculty-section-heading">
+                <div>
+                    <h2>Quick Actions</h2>
+                    <p>Shortcuts to your frequently used tools.</p>
+                </div>
+            </div>
+
+            <div class="faculty-quick-grid">
+
+                <a href="{% url 'questionbank:question_create' %}"
+                   class="quick-action-card">
+                    <span class="quick-icon purple">＋</span>
+                    <strong>Add New Question</strong>
+                    <small>Add a question to your question bank.</small>
+                    <span class="quick-arrow">→</span>
+                </a>
+
+                <a href="{% url 'questionbank:generate_question_set' %}"
+                   class="quick-action-card">
+                    <span class="quick-icon blue">✧</span>
+                    <strong>Generate Question Set</strong>
+                    <small>Select a random set from your question bank.</small>
+                    <span class="quick-arrow">→</span>
+                </a>
+
+                <a href="{% url 'assessments:assessment_create' %}"
+                   class="quick-action-card">
+                    <span class="quick-icon orange">▣</span>
+                    <strong>Create Assessment</strong>
+                    <small>Build a new aptitude assessment.</small>
+                    <span class="quick-arrow">→</span>
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- Recent Assessments -->
+        <section class="faculty-section">
+
+            <div class="faculty-section-heading">
+                <div>
+                    <h2>Recent Assessments</h2>
+                    <p>Your latest assessment activities.</p>
+                </div>
+
+                <a href="{% url 'assessments:assessment_list' %}"
+                   class="faculty-text-link">
+                    View all →
+                </a>
+            </div>
+
+            <div class="recent-assessments">
+
+                {% for assessment in recent_assessments %}
+
+                <div class="recent-assessment-row">
+
+                    <div class="recent-assessment-icon">📝</div>
+
+                    <div class="recent-assessment-info">
+                        <strong>{{ assessment.title }}</strong>
+                        <small>
+                            {{ assessment.total_questions }} questions
+                            · {{ assessment.total_duration_minutes }} minutes
+                        </small>
+                    </div>
+
+                    <span class="assessment-status-badge status-{{ assessment.status|lower }}">
+                        {{ assessment.get_status_display }}
+                    </span>
+
+                    <a href="{% url 'assessments:assessment_detail' assessment.pk %}"
+                       class="recent-view-link">
+                        View →
+                    </a>
+
+                </div>
+
+                {% empty %}
+
+                <div class="faculty-empty-state">
+                    <div>📝</div>
+                    <h3>No assessments yet</h3>
+                    <p>Create your first assessment to get started.</p>
+
+                    <a href="{% url 'assessments:assessment_create' %}"
+                       class="faculty-primary-btn">
+                        Create Assessment
+                    </a>
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+
+        <footer class="faculty-footer">
+            <span>© {% now "Y" %} AptiPro</span>
+            <span>Practice Smart. Think Fast. Get Placed.</span>
+        </footer>
+
+    </main>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,247 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Generate Questions | AptiPro{% endblock %}
+
+{% block extra_css %}
+<style>
+    .generate-container {
+        max-width: 1050px;
+        margin: 35px auto;
+        padding: 20px;
+    }
+
+    .generate-header {
+        margin-bottom: 25px;
+    }
+
+    .generate-header h1 {
+        color: #172554;
+        font-size: 29px;
+        margin-bottom: 8px;
+    }
+
+    .generate-header p {
+        color: #64748b;
+    }
+
+    .generate-panel {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 28px;
+        box-shadow: 0 8px 25px rgba(15, 23, 42, .05);
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        color: #334155;
+    }
+
+    .form-group select,
+    .form-group input {
+        width: 100%;
+        padding: 13px;
+        border: 1px solid #cbd5e1;
+        border-radius: 9px;
+        background: #fff;
+        font-size: 14px;
+    }
+
+    .generate-btn {
+        margin-top: 25px;
+        background: #2563eb;
+        color: white;
+        border: none;
+        padding: 13px 22px;
+        border-radius: 9px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .generate-btn:hover {
+        background: #1d4ed8;
+    }
+
+    .question-result {
+        margin-top: 30px;
+    }
+
+    .question-card {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 15px;
+    }
+
+    .question-card h3 {
+        color: #1e293b;
+        font-size: 16px;
+        margin-bottom: 14px;
+    }
+
+    .option {
+        padding: 9px 12px;
+        margin: 7px 0;
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 7px;
+        color: #475569;
+    }
+
+    .question-meta {
+        color: #64748b;
+        font-size: 13px;
+        margin-top: 12px;
+    }
+
+    .empty-message {
+        padding: 25px;
+        text-align: center;
+        color: #64748b;
+        background: #f8fafc;
+        border-radius: 12px;
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-top: 20px;
+        color: #2563eb;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    @media(max-width: 650px) {
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .generate-panel {
+            padding: 18px;
+        }
+
+        .generate-header h1 {
+            font-size: 24px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="generate-container">
+
+    <div class="generate-header">
+        <h1>Auto Generate Question Set</h1>
+        <p>Automatically create a question set using your existing question bank.</p>
+    </div>
+
+    <div class="generate-panel">
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label for="category">Question Category</label>
+
+                    <select name="category" id="category" required>
+                        <option value="">Select Category</option>
+
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">
+                                {{ category.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="difficulty">Difficulty Level</label>
+
+                    <select name="difficulty" id="difficulty" required>
+                        <option value="">Select Difficulty</option>
+                        <option value="EASY">Easy</option>
+                        <option value="MEDIUM">Medium</option>
+                        <option value="HARD">Hard</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="count">Number of Questions</label>
+
+                    <input
+                        type="number"
+                        name="count"
+                        id="count"
+                        min="1"
+                        max="100"
+                        value="10"
+                        required
+                    >
+                </div>
+
+            </div>
+
+            <button type="submit" class="generate-btn">
+                Generate Question Set
+            </button>
+
+        </form>
+
+    </div>
+
+    {% if generated_questions %}
+
+        <div class="question-result">
+
+            <h2>Generated Questions</h2>
+            <p>{{ generated_questions|length }} questions generated successfully.</p>
+
+            {% for question in generated_questions %}
+
+                <div class="question-card">
+
+                    <h3>
+                        {{ forloop.counter }}. {{ question.question_text }}
+                    </h3>
+
+                    <div class="option">A. {{ question.option_a }}</div>
+                    <div class="option">B. {{ question.option_b }}</div>
+                    <div class="option">C. {{ question.option_c }}</div>
+                    <div class="option">D. {{ question.option_d }}</div>
+
+                    <div class="question-meta">
+                        Difficulty: {{ question.difficulty }} |
+                        Marks: {{ question.marks }}
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+    <a href="{% url 'questionbank:question_list' %}" class="back-link">
+        ← Back to Question Bank
+    </a>
+
+</div>
+
+{% endblock %}

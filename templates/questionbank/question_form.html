@@ -1,0 +1,146 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ page_heading }} | AptiPro{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/questionbank.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="qb-page qb-form-page">
+
+    <div class="qb-header">
+        <div>
+            <span class="qb-eyebrow">QUESTION MANAGEMENT</span>
+            <h1>{{ page_heading }}</h1>
+            <p>Enter the question details, options and marking rules.</p>
+        </div>
+
+        <a href="{% url 'questionbank:question_list' %}"
+           class="qb-btn qb-btn-outline">
+            ← Back to Question Bank
+        </a>
+    </div>
+
+    <form method="POST" class="qb-form-panel">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="qb-error">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <div class="qb-form-section">
+            <h2>01. Question Details</h2>
+            <p>Choose a category and enter the question.</p>
+
+            <div class="qb-form-grid">
+                <div class="qb-field full">
+                    <label for="{{ form.category.id_for_label }}">Category</label>
+                    {{ form.category }}
+                    {{ form.category.errors }}
+                </div>
+
+                <div class="qb-field full">
+                    <label for="{{ form.question_text.id_for_label }}">Question</label>
+                    {{ form.question_text }}
+                    {{ form.question_text.errors }}
+                </div>
+
+                <div class="qb-field">
+                    <label for="{{ form.difficulty.id_for_label }}">Difficulty</label>
+                    {{ form.difficulty }}
+                    {{ form.difficulty.errors }}
+                </div>
+
+                <div class="qb-field">
+                    <label for="{{ form.time_limit_seconds.id_for_label }}">Time limit (seconds)</label>
+                    {{ form.time_limit_seconds }}
+                    {{ form.time_limit_seconds.errors }}
+                </div>
+            </div>
+        </div>
+
+        <div class="qb-form-section">
+            <h2>02. Answer Options</h2>
+            <p>Enter all four options and select the correct answer.</p>
+
+            <div class="qb-form-grid">
+                <div class="qb-field">
+                    <label>Option A</label>
+                    {{ form.option_a }}
+                    {{ form.option_a.errors }}
+                </div>
+
+                <div class="qb-field">
+                    <label>Option B</label>
+                    {{ form.option_b }}
+                    {{ form.option_b.errors }}
+                </div>
+
+                <div class="qb-field">
+                    <label>Option C</label>
+                    {{ form.option_c }}
+                    {{ form.option_c.errors }}
+                </div>
+
+                <div class="qb-field">
+                    <label>Option D</label>
+                    {{ form.option_d }}
+                    {{ form.option_d.errors }}
+                </div>
+
+                <div class="qb-field full">
+                    <label>Correct Answer</label>
+                    {{ form.correct_option }}
+                    {{ form.correct_option.errors }}
+                </div>
+
+                <div class="qb-field full">
+                    <label>Explanation</label>
+                    {{ form.explanation }}
+                    {{ form.explanation.errors }}
+                </div>
+            </div>
+        </div>
+
+        <div class="qb-form-section">
+            <h2>03. Marks and Availability</h2>
+            <p>Set the scoring rules for this question.</p>
+
+            <div class="qb-form-grid">
+                <div class="qb-field">
+                    <label>Correct Answer Marks</label>
+                    {{ form.marks }}
+                    {{ form.marks.errors }}
+                </div>
+
+                <div class="qb-field">
+                    <label>Negative Marks</label>
+                    {{ form.negative_marks }}
+                    {{ form.negative_marks.errors }}
+                </div>
+
+                <div class="qb-field full qb-checkbox-field">
+                    {{ form.is_active }}
+                    <label for="{{ form.is_active.id_for_label }}">
+                        Make this question active and available for assessment generation
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="qb-form-footer">
+            <a href="{% url 'questionbank:question_list' %}"
+               class="qb-btn qb-btn-outline">
+                Cancel
+            </a>
+
+            <button type="submit" class="qb-btn qb-btn-primary">
+                {{ button_text }} →
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
